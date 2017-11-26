@@ -6,13 +6,13 @@ var WIZARDS_EYESCOLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARDS_COUNT = 4;
 // Функция для получения целого случайного числа в заданном диапазоне
 function getRandomIntegerValue(minValue, maxValue) {
-  return Math.round(Math.random() * (maxValue - minValue) + minValue);  
+  return Math.round(Math.random() * (maxValue - minValue) + minValue);
 }
 // Функция для заполнения массива волшебников
-function GetArrayWizards(wizards){
+function getArrayWizards(wizards) {
   for (var i = 0; i < WIZARDS_COUNT; i++) {
     var randomValue = getRandomIntegerValue(0, 7);
-    wizards.push({ name: WIZARDS_NAMES[randomValue] + ' ' +  WIZARDS_SURNAMES[randomValue], coatColor: WIZARDS_COATCOLORS[getRandomIntegerValue(0, 5)], eyesColor: WIZARDS_EYESCOLORS[getRandomIntegerValue(0, 4)] });
+    wizards.push({name: WIZARDS_NAMES[randomValue] + ' ' + WIZARDS_SURNAMES[randomValue], coatColor: WIZARDS_COATCOLORS[getRandomIntegerValue(0, 5)], eyesColor: WIZARDS_EYESCOLORS[getRandomIntegerValue(0, 4)]});
   }
 }
 // Функция для клонирования волшебников из шаблона
@@ -20,16 +20,16 @@ var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
   wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.coatColor;    
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.coatColor;
   wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
   return wizardElement;
-}
+};
 var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 var wizards = [];
-GetArrayWizards(wizards);
+getArrayWizards(wizards);
 // Функция заполнения волшебников из массива
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < wizards.length; i++) {
@@ -37,9 +37,3 @@ for (var i = 0; i < wizards.length; i++) {
 }
 similarListElement.appendChild(fragment);
 document.querySelector('.setup-similar').classList.remove('hidden');
-
-
-
-
-
-
