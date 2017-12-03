@@ -50,8 +50,9 @@ var openPopup = function () {
 var closePopup = function () {
   setup.classList.add('hidden');
 };
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+// изначально окно с настройками должно быть закрыто, но так было бы логично, поэтому комментируем 2 след. строчки
+// var userDialog = document.querySelector('.setup');
+// userDialog.classList.remove('hidden');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 var wizards = getArrayWizards();
@@ -80,12 +81,12 @@ setupClose.addEventListener('keydown', function (evt) {
     closePopup();
   }
 });
-wizardCoat.addEventListener('click', function () {
-  wizardCoat.style.fill = WIZARDS_COATCOLORS[getRandomIntegerValue(0, WIZARDS_COATCOLORS.length - 1)];
+wizardCoat.addEventListener('click', function (evt) {
+  evt.currentTarget.style.fill = WIZARDS_COATCOLORS[getRandomIntegerValue(0, WIZARDS_COATCOLORS.length - 1)];
 });
-wizardEyes.addEventListener('click', function () {
-  wizardEyes.style.fill = WIZARDS_EYESCOLORS[getRandomIntegerValue(0, WIZARDS_EYESCOLORS.length - 1)];
+wizardEyes.addEventListener('click', function (evt) {
+  evt.currentTarget.style.fill = WIZARDS_EYESCOLORS[getRandomIntegerValue(0, WIZARDS_EYESCOLORS.length - 1)];
 });
-setupFireballWrap.addEventListener('click', function () {
-  setupFireballWrap.style.background = WIZARDS_FIREBALLS[getRandomIntegerValue(0, WIZARDS_FIREBALLS.length - 1)];
+setupFireballWrap.addEventListener('click', function (evt) {
+  evt.currentTarget.style.background = WIZARDS_FIREBALLS[getRandomIntegerValue(0, WIZARDS_FIREBALLS.length - 1)];
 });
