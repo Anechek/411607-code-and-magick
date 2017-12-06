@@ -1,0 +1,38 @@
+'use strict';
+(function () {
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
+  var openPopup = function () {
+    setup.classList.remove('hidden');
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        var targetElement = evt.target;
+        if (targetElement.className !== 'setup-user-name') {
+          closePopup();
+        }
+      }
+    });
+  };
+  var closePopup = function () {
+    setup.classList.add('hidden');
+  };
+  var setupOpen = document.querySelector('.setup-open');
+  var setup = document.querySelector('.setup');
+  var setupClose = setup.querySelector('.setup-close');
+  setupOpen.addEventListener('click', function () {
+    openPopup();
+  });
+  setupOpen.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      openPopup();
+    }
+  });
+  setupClose.addEventListener('click', function () {
+    closePopup();
+  });
+  setupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closePopup();
+    }
+  });
+})();
