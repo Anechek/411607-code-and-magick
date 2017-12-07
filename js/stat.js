@@ -19,17 +19,6 @@
   var YOUR_BAR_FILLSTYLE = 'rgba(255, 0, 0, 1)';
   var WHITE_COLOR = '#ffffff';
   var BLACK_COLOR = '#000000';
-  // функция для нахождения максимального значения в массиве
-  function getMaxNumber(times) {
-    var max = -1;
-    for (var i = 0; i < times.length; i++) {
-      var time = times[i];
-      if (time > max) {
-        max = time;
-      }
-    }
-    return max;
-  }
   // функция для нахождения случайного значения в заданном диапазоне (прозрачность)
   function getRandomColorOpacity(minOpacity, maxOpacity) {
     return Math.random() * (maxOpacity - minOpacity) + minOpacity;
@@ -45,7 +34,7 @@
     ctx.fillText('Ура вы победили!', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y1);
     ctx.fillText('Список результатов:', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y2);
     // находим максимальное время и шаг временной шкалы 
-    var max = getMaxNumber(times);
+    var max = window.getMaxNumber(times);
     var step = HISTOGRAM_HEIGHT / (max - 0);
     // рисуем гистограмму
     for (var i = 0; i < times.length; i++) {
