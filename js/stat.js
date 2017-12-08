@@ -19,10 +19,6 @@
   var YOUR_BAR_FILLSTYLE = 'rgba(255, 0, 0, 1)';
   var WHITE_COLOR = '#ffffff';
   var BLACK_COLOR = '#000000';
-  // функция для нахождения случайного значения в заданном диапазоне (прозрачность)
-  function getRandomColorOpacity(minOpacity, maxOpacity) {
-    return Math.random() * (maxOpacity - minOpacity) + minOpacity;
-  }
   window.renderStatistics = function (ctx, names, times) {
     // рисуем облако с сообщением    
     ctx.fillStyle = CLOUD_SHADOW_FILLSTYLE;
@@ -34,11 +30,11 @@
     ctx.fillText('Ура вы победили!', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y1);
     ctx.fillText('Список результатов:', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y2);
     // находим максимальное время и шаг временной шкалы 
-    var max = window.getMaxNumber(times);
+    var max = window.utils.getMaxNumber(times);
     var step = HISTOGRAM_HEIGHT / (max - 0);
     // рисуем гистограмму
     for (var i = 0; i < times.length; i++) {
-      ctx.fillStyle = (names[i] === 'Вы') ? YOUR_BAR_FILLSTYLE : 'rgba(0, 0, 255,' + getRandomColorOpacity(0.1, 1) + ')';
+      ctx.fillStyle = (names[i] === 'Вы') ? YOUR_BAR_FILLSTYLE : 'rgba(0, 0, 255,' + window.utils.getRandomColorOpacity(0.1, 1) + ')';
       ctx.fillRect(INITIAL_BAR_X + (BAR_WIDTH + INDENT) * i, CLOUD_HEIGHT - times[i] * step - INITIAL_BAR_BASIS_Y, BAR_WIDTH, times[i] * step);
       ctx.fillStyle = BLACK_COLOR;
       ctx.fillText(Math.round(times[i]), INITIAL_BAR_X + (BAR_WIDTH + INDENT) * i, CLOUD_HEIGHT - times[i] * step - INITIAL_BAR_BASIS_Y - LINE_HEIGHT_TIME);
