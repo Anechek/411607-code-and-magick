@@ -19,8 +19,11 @@
   var YOUR_BAR_FILLSTYLE = 'rgba(255, 0, 0, 1)';
   var WHITE_COLOR = '#ffffff';
   var BLACK_COLOR = '#000000';
+
   window.renderStatistics = function (ctx, names, times) {
-    // рисуем облако с сообщением    
+
+    // рисуем облако с сообщением 
+
     ctx.fillStyle = CLOUD_SHADOW_FILLSTYLE;
     ctx.fillRect(INITIAL_CLOUD_SHADOW_X, INITIAL_CLOUD_SHADOW_Y, CLOUD_WIDTH, CLOUD_HEIGHT);
     ctx.fillStyle = WHITE_COLOR;
@@ -29,10 +32,14 @@
     ctx.font = '16px PT Mono';
     ctx.fillText('Ура вы победили!', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y1);
     ctx.fillText('Список результатов:', INITIAL_MESSAGE_X, INITIAL_MESSAGE_Y2);
+
     // находим максимальное время и шаг временной шкалы 
+
     var max = window.utils.getMaxNumber(times);
     var step = HISTOGRAM_HEIGHT / (max - 0);
+
     // рисуем гистограмму
+
     for (var i = 0; i < times.length; i++) {
       ctx.fillStyle = (names[i] === 'Вы') ? YOUR_BAR_FILLSTYLE : 'rgba(0, 0, 255,' + window.utils.getRandomColorOpacity(0.1, 1) + ')';
       ctx.fillRect(INITIAL_BAR_X + (BAR_WIDTH + INDENT) * i, CLOUD_HEIGHT - times[i] * step - INITIAL_BAR_BASIS_Y, BAR_WIDTH, times[i] * step);
