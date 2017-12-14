@@ -79,21 +79,22 @@
   addWizardsFromArray(wizards);
   document.querySelector('.setup-similar').classList.remove('hidden');
   var setupWizard = document.querySelector('.setup-wizard');
+
   var wizardCoat = setupWizard.querySelector('.wizard-coat');
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
   var setupFireballWrap = document.querySelector('.setup-fireball-wrap');
 
-  wizardCoat.addEventListener('click', function (evt) {
-    evt.currentTarget.style.fill = WIZARDS_COATCOLORS[window.utils.getRandomIntegerValue(0, WIZARDS_COATCOLORS.length - 1)];
-  });
+  var fillElement = function (element, color) {
+    element.style.fill = color;
+  };
 
-  wizardEyes.addEventListener('click', function (evt) {
-    evt.currentTarget.style.fill = WIZARDS_EYESCOLORS[window.utils.getRandomIntegerValue(0, WIZARDS_EYESCOLORS.length - 1)];
-  });
+  var changeElementBackground = function (element, color) {
+    element.style.backgroundColor = color;
+  };
 
-  setupFireballWrap.addEventListener('click', function (evt) {
-    evt.currentTarget.style.background = WIZARDS_FIREBALLS[window.utils.getRandomIntegerValue(0, WIZARDS_FIREBALLS.length - 1)];
-  });
+  window.colorizeElement(wizardCoat, WIZARDS_COATCOLORS, fillElement);
+  window.colorizeElement(wizardEyes, WIZARDS_EYESCOLORS, fillElement);
+  window.colorizeElement(setupFireballWrap, WIZARDS_FIREBALLS, changeElementBackground);
 
   var shopElement = document.querySelector('.setup-artifacts-shop');
   var draggedItem = null;
