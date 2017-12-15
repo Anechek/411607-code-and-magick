@@ -19,6 +19,9 @@ window.setupevents = (function () {
 
   var closePopup = function () {
     setup.classList.add('hidden');
+    if (window.node) {
+      window.node.remove();
+    }
   };
 
   var setupOpen = document.querySelector('.setup-open');

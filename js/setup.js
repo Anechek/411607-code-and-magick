@@ -1,42 +1,19 @@
 'use strict';
 (function () {
-  var WIZARDS_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARDS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var WIZARDS_COATCOLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var WIZARDS_EYESCOLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var WIZARDS_FIREBALLS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
   var WIZARDS_COUNT = 4;
-
-  // Функция для заполнения массива волшебников
-
-  function getArrayWizards() {
-    var array = [];
-    for (var i = 0; i < WIZARDS_COUNT; i++) {
-      var randomValue = window.utils.getRandomIntegerValue(0, 7);
-      array.push({name: WIZARDS_NAMES[randomValue] + ' ' + WIZARDS_SURNAMES[randomValue], coatColor: WIZARDS_COATCOLORS[window.utils.getRandomIntegerValue(0, 5)], eyesColor: WIZARDS_EYESCOLORS[window.utils.getRandomIntegerValue(0, 4)]});
-    }
-    return array;
-  }
 
   // Функция для клонирования волшебников из шаблона
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
     wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
     return wizardElement;
   };
-
-  // Функция заполнения волшебников из массива
-
-  function addWizardsFromArray(wizardsArray) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizardsArray.length; i++) {
-      fragment.appendChild(renderWizard(wizardsArray[i]));
-    }
-    similarListElement.appendChild(fragment);
-  }
 
   // Функция для добавления красных рамок.
 
@@ -73,24 +50,75 @@
     removeRedOutline();
   };
 
-  var similarListElement = document.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
-  var wizards = getArrayWizards();
-  addWizardsFromArray(wizards);
-  document.querySelector('.setup-similar').classList.remove('hidden');
-  var setupWizard = document.querySelector('.setup-wizard');
-
-  var wizardCoat = setupWizard.querySelector('.wizard-coat');
-  var wizardEyes = setupWizard.querySelector('.wizard-eyes');
-  var setupFireballWrap = document.querySelector('.setup-fireball-wrap');
-
+  // Функция для изменения цвета плаща или глаз
   var fillElement = function (element, color) {
     element.style.fill = color;
   };
 
+  // Функция для изменения цвета фаерболла
+
   var changeElementBackground = function (element, color) {
     element.style.backgroundColor = color;
   };
+
+  // Для формы определим обработчик событий по нажатию кнопки Сохранить
+
+  // При успешной отправке
+
+  var onSuccessSubmit = function () {
+    window.setupevents.setup.classList.add('hidden');
+  };
+
+  // При возникновении ошибки во время отправке
+
+  var onErrorLoadSave = function (errorMessage, loadError) {
+    window.node = document.createElement('div');
+    window.node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    window.node.style.position = 'absolute';
+    window.node.style.left = 0;
+    window.node.style.right = 0;
+    window.node.style.fontSize = '30px';
+    window.node.textContent = errorMessage;
+    if (loadError) {
+      document.body.insertAdjacentElement('afterbegin', window.node);
+    } else {
+      window.node.style.width = '80%';
+      window.setupevents.setup.insertAdjacentElement('afterbegin', window.node);
+    }
+  };
+
+  // Функция для обработчика нажатия кнопки Сохранить
+
+  var onFormSubmit = function (evt) {
+    window.backend.save(new FormData(form), onSuccessSubmit, onErrorLoadSave);
+    evt.preventDefault();
+    if (window.node) {
+      window.node.remove();
+    }
+  };
+
+  // Функция заполнения волшебников с сервера
+
+  function addWizardsFromServer() {
+
+    window.backend.load(function (wizards) {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < WIZARDS_COUNT; i++) {
+        fragment.appendChild(renderWizard(wizards[i]));
+      }
+      similarListElement.appendChild(fragment);
+    }, onErrorLoadSave);
+  }
+
+
+  var similarListElement = document.querySelector('.setup-similar-list');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
+  addWizardsFromServer();
+  document.querySelector('.setup-similar').classList.remove('hidden');
+  var setupWizard = document.querySelector('.setup-wizard');
+  var wizardCoat = setupWizard.querySelector('.wizard-coat');
+  var wizardEyes = setupWizard.querySelector('.wizard-eyes');
+  var setupFireballWrap = document.querySelector('.setup-fireball-wrap');
 
   window.colorizeElement(wizardCoat, WIZARDS_COATCOLORS, fillElement);
   window.colorizeElement(wizardEyes, WIZARDS_EYESCOLORS, fillElement);
@@ -136,4 +164,8 @@
 
   document.addEventListener('dragend', removeRedOutline);
 
+  // Обработчик для кнопки Соханить
+
+  var form = window.setupevents.setup.querySelector('.setup-wizard-form');
+  form.addEventListener('submit', onFormSubmit);
 })();
